@@ -1,5 +1,4 @@
 # CyberWitcher 12/10
-Readme port from GitLab.
 ![Disintegrated in Endgame, Thanos appeared in CyberWithcer...](https://i.imgur.com/mbKZkXl.png)
 
 ## Concept
