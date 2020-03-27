@@ -1,7 +1,7 @@
 # CyberWitcher 12/10
-
+Readme port from GitLab.
 ![Disintegrated in Endgame, Thanos appeared in CyberWithcer...](https://i.imgur.com/mbKZkXl.png)
-### Whole Unity-side C# code is in the "import" folder
+
 ## Concept
 ### *"Witcher from the world of shooters"*
  - 3D, Top-down view
@@ -46,7 +46,8 @@
 
 ## Links
 [Presentation](https://drive.google.com/file/d/111I8_-14rfV_Yr7XzM8W6rFNg0wP9FIs/view?usp=sharing)
+[GitLab](https://gitlab.cs.ttu.ee/kigris/iti0200-2020-project)
 
 
-## Documentation, tutorials and other stuff
+## Documentation, tutorials and other stuff (will be populated soon)
 [Project wiki](https://gitlab.cs.ttu.ee/kigris/iti0200-2020-project/-/wikis/home)
