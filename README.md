@@ -47,7 +47,7 @@
  - Inventory
 
 ## Technologies list
- - U N I T Y 3 D
+ - Unity 2019.3.2f1
  - Java for server side
 
 ## Links
