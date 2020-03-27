@@ -1,6 +1,4 @@
-# CyberWitcher 12/10 :thumbsup:
-
-:arrow_down: :arrow_down: :arrow_down:  A LOT OF CONTENT BELOW :arrow_down: :arrow_down: :arrow_down: 
+# CyberWitcher 12/10
 
 ![Disintegrated in Endgame, Thanos appeared in CyberWithcer...](https://i.imgur.com/mbKZkXl.png)
 ### Whole Unity-side C# code is in the "import" folder
