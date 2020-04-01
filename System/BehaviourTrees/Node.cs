@@ -16,7 +16,7 @@ namespace VovTech.Behaviours
         /// <summary>
         /// All nodes which are connected to this node.
         /// </summary>
-        private List<Node> children;
+        private List<string> children;
         /// <summary>
         /// Nodes that should be updated in parallel.
         /// </summary>
@@ -64,14 +64,14 @@ namespace VovTech.Behaviours
                 }
             };
             data.Attach(this);
-            children = new List<Node>();
+            children = new List<string>();
         }
 
         /// <summary>
         /// Connect some node to this node.
         /// </summary>
         /// <param name="node">Node to connect</param>
-        public void AddChild(Node node)
+        public void AddChild(string node)
         {
             children.Add(node);
         }
@@ -93,7 +93,7 @@ namespace VovTech.Behaviours
             Debug.Log(data.Name + " children:");
             for(int i = 0; i < children.Count; i++)
             {
-                Debug.Log($"    {children[i].GetData().Name}|{children[i].GetData().Id}|{i}");
+                Debug.Log($"    {children[i]}|{Tree.GetNode(children[i]).GetData().Id}|{i}");
             }
             Debug.Log("__________");
         }
@@ -110,7 +110,7 @@ namespace VovTech.Behaviours
         /// </summary>
         /// <param name="i">Local id</param>
         /// <returns>Found child or null</returns>
-        public Node GetChild(int i)
+        public string GetChild(int i)
         {
             return children[i];
         }
@@ -175,16 +175,18 @@ namespace VovTech.Behaviours
         {
             if (parallelNodes.Contains(node)) parallelNodes.Remove(node);
         }
+    }
 
-        /// <summary>
-        /// Do some action affecting this, all it's children and all their children and so on...
-        /// </summary>
-        /// <param name="visitor">Action to do</param>
-        public void Traverse(Action visitor)
+    /// <summary>
+    /// Special structure which holds node in order to build trees.
+    /// </summary>
+    public struct NodeContainer
+    {
+        public Node AttachedNode;
+
+        public NodeContainer(Node attachedNode)
         {
-            visitor?.Invoke();
-            foreach (Node kid in children)
-                Traverse(visitor);
+            AttachedNode = attachedNode;
         }
     }
 }

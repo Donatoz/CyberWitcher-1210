@@ -10,34 +10,36 @@ namespace VovTech.Behaviours
         public string Name { get; set; }
         public int Id { get; set; }
         public Node AttachedNode { get; private set; }
-        public Node FallbackNode;
-        public Dictionary<Node, Func<bool>> OutputNodes;
+        public string FallbackNodeId;
+        public Dictionary<string, Func<bool>> OutputNodes;
 
-        public CompositeData(Node fallback, params (Node, Func<bool>)[] outputNodes)
+        public CompositeData(string fallbackNodeName, params (string, Func<bool>)[] outputNodes)
         {
-            FallbackNode = (fallback == null) ? AttachedNode.Parent : fallback;
-            foreach((Node, Func<bool>) tuple in outputNodes)
+            OutputNodes = new Dictionary<string, Func<bool>>();
+            FallbackNodeId = (fallbackNodeName == string.Empty) ? AttachedNode.GetData().Name : fallbackNodeName;
+            foreach((string, Func<bool>) tuple in outputNodes)
             {
                 OutputNodes[tuple.Item1] = tuple.Item2;
             }
-
-            AttachedNode.UpdateAction += delegate
-            {
-                foreach (KeyValuePair<Node, Func<bool>> pair in OutputNodes)
-                {
-                    if (pair.Value())
-                    {
-                        AttachedNode.Tree.Pointer.MoveTo(pair.Key.GetData().Id);
-                        return;
-                    }
-                }
-                AttachedNode.Tree.Pointer.MoveTo(FallbackNode.GetData().Id);
-            };
         }
 
         public void Attach(Node node)
         {
             AttachedNode = node;
+            AttachedNode.UpdateAction += delegate
+            {
+                foreach (KeyValuePair<string, Func<bool>> pair in OutputNodes)
+                {
+                    if (pair.Value())
+                    {
+                        Debug.Log($"Moved to: {pair.Key}");
+                        AttachedNode.Tree.Pointer.MoveTo(AttachedNode.Tree.GetNode(pair.Key).GetData().Id);
+                        return;
+                    }
+                }
+                Debug.Log($"Reverted to: {FallbackNodeId}");
+                AttachedNode.Tree.Pointer.MoveTo(AttachedNode.Tree.GetNode(FallbackNodeId).GetData().Id);
+            };
         }
     }
 }

@@ -62,7 +62,7 @@ namespace VovTech.Behaviours
                             AttachedNode.Tree.ReachedEnd = true;
                             break;
                         }
-                        Debug.Log($"{Name} is exited and moved to {AttachedNode.GetChild(pair.Value).GetData().Name}");
+                        Debug.Log($"{Name} is exited and moved to {AttachedNode.Tree.GetNode(AttachedNode.GetChild(pair.Value)).GetData().Name}");
                         break;
                     }
                 }

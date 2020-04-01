@@ -74,7 +74,6 @@ namespace VovTech
         public void AddModifier(float value, string id = "modifier")
         {
             if (EffectiveValue + value > MaxValue && EffectiveValue + value < MinValue) return;
-            Debug.Log(value);
             modifiers.Add(new Modifier(value, id));
             OnValueChange?.Invoke(this);
         }

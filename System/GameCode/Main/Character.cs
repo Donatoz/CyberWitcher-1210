@@ -80,6 +80,7 @@ namespace VovTech
         {
             stats["Speed"] = new Stat(3);
             stats["AngularSpeed"] = new Stat(7);
+            stats["Health"].AddModifier(healthModifier);
             Inventory = new List<Item>();
             WeaponSequence = new NavigationList<Weapon>();
 
@@ -148,7 +149,6 @@ namespace VovTech
 
         private void Update()
         {
-            //stats["Health"].BaseValue = healthModifier;
             if(Owner.Local && !IsDead)
                 headLookingPos = Vector3.Lerp(headLookingPos, InputManager.Instance.MouseWorldPosition, Time.deltaTime * 14);
         }

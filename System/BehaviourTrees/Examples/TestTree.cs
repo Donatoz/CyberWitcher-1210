@@ -72,7 +72,7 @@ namespace VovTech.Behaviours
             AddNode(moveBackNode, debugLogNode, "Move back node");
 
             //Connect new node to the start node, whereby our tree becomes endless.
-            ConnectNodes(moveBackNode, movingNode);
+            ConnectNodes("Move back node", "Moving node");
 
             return true;
         }

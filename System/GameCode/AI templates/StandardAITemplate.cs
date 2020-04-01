@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// All code below belongs to BOB[A]H Technologies.
+//-----------------------------------------------
+//Standard template for AI behaviour (Legacy).
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

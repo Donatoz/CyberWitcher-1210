@@ -12,14 +12,14 @@ namespace VovTech.Behaviours
             return new Node(new StateData(null, null, null)) { Tree = tree };
         }
 
-        public static Node Switch(Node fallbackNode, params (Node, Func<bool>)[] outputNodes)
+        public static Node Switch(string fallbackNodeName, params (string, Func<bool>)[] outputNodes)
         {
-            return new Node(new CompositeData(fallbackNode, outputNodes));
+            return new Node(new CompositeData(fallbackNodeName, outputNodes));
         }
 
-        public static Node Choice(Node ifTrueNode, Node ifFalseNode, Func<bool> condition)
+        public static Node Choice(string ifTrueNodeName, string ifFalseNodeName, Func<bool> condition)
         {
-            return new Node(new CompositeData(ifFalseNode, (ifTrueNode, condition)));
+            return new Node(new CompositeData(ifFalseNodeName, (ifTrueNodeName, condition)));
         }
 
         public static Node Relay()

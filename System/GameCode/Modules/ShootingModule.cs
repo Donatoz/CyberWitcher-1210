@@ -22,7 +22,8 @@ namespace VovTech
         {
             if (currentShotInterval > 0) return;
             AttachedEntity.AsItem().Owner.ReadyTimer += Settings.ShotInterval + 0.2f;
-            Quaternion startRotation = Quaternion.LookRotation(InputManager.Instance.MouseWorldPosition - ProjectileSpawn.position);
+            Vector3 mousePos = InputManager.Instance.MouseWorldPosition;
+            Quaternion startRotation = Quaternion.LookRotation(new Vector3(mousePos.x, ProjectileSpawn.position.y, mousePos.z) - ProjectileSpawn.position);
             if (target != default)
             {
                 startRotation = Quaternion.LookRotation(target - ProjectileSpawn.position);

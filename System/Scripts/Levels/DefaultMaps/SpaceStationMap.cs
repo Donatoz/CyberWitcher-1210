@@ -25,7 +25,7 @@ namespace VovTech.Levels
                 (Entity.GetById("CanteenMainDoor") as Door).Open();
                 InteractiveObject.GetGroup("CanteenMainDoorLight").ForEach(obj =>
                 obj.ChangeLightsColor(ColorTemplates.Get.NormalCyan, 0.4f).ChangeMaterialColor("_EmissionColor", ColorTemplates.Get.BrightCyan, 0.1f));
-                Entity.GetById("CanteenEliteSoldier").AsActor().AsNPC().OrderAssembler.Walk(new Vector3(-39.899f, 51.155f, -1.971f));
+                Entity.GetById("CanteenEliteSoldier")?.AsActor().AsNPC().OrderAssembler.Walk(new Vector3(-39.899f, 51.155f, -1.971f));
             };
             TriggerFunctions["CloseCanteenMainDoor"] = () => { (Entity.GetById("CanteenMainDoor") as Door).Close(); };
             #endregion

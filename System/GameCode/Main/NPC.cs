@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using UnityEditor;
+using VovTech.Behaviours;
 
 namespace VovTech
 {
@@ -57,6 +58,7 @@ namespace VovTech
         /// Weapon which will be given to the NPC in the Start() function.
         /// </summary>
         public Weapon StartWeapon;
+        public Vector3 TargetLastSeenPosition;
 
         [SerializeField]
         public Actor focusedTarget { get; private set; }
@@ -94,17 +96,42 @@ namespace VovTech
             }
         }
 
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            if(!IsDead)
+            {
+                int actorsMask = LayerMask.GetMask("Actors");
+                Collider[] touchedColliders = Physics.OverlapSphere(transform.position, AggressiveRadius, actorsMask);
+                for(int i = 0; i < touchedColliders.Length; i++)
+                {
+                    bool foundActor = false;
+                    Actor actor = touchedColliders[i].GetComponent<Actor>();
+                    if(actor != null && actor != this)
+                    {
+                        Focuse(actor);
+                        foundActor = true;
+                    }
+                    if (!foundActor)
+                        focusedTarget = null;
+                }
+            }
+        }
+
         public override void Initialize()
         {
             Init();
-            AITemplate template;
-            if (BehaviorTemplate != null)
-                template = ScriptableObject.CreateInstance(BehaviorTemplate.GetClass()) as AITemplate;
-            else
-                template = StandardAITemplate.CreateInstance<StandardAITemplate>();
-            template.Initialize(this);
-            Behavior.SetTemplate(template);
-            Behavior.Enabled = true;
+            if (GetComponent<BehaviourTree>() == null)
+            {
+                AITemplate template;
+                if (BehaviorTemplate != null)
+                    template = ScriptableObject.CreateInstance(BehaviorTemplate.GetClass()) as AITemplate;
+                else
+                    template = StandardAITemplate.CreateInstance<StandardAITemplate>();
+                template.Initialize(this);
+                Behavior.SetTemplate(template);
+                Behavior.Enabled = true;
+            }
         }
 
         public void EquipWeapon(Weapon weapon)
@@ -138,10 +165,22 @@ namespace VovTech
         public void Focuse(Actor actor)
         {
             focusedTarget = actor;
+            if(focusedTarget != null && focusedTarget.ActorFraction != ActorFraction)
+            {
+                LookHorizontalyLerp(actor.BodyCenter.position, 4);
+                Animator.SetTrigger("Aim" + EquipedWeapon.Settings.HoldingType.ToString());
+            }
+        }
+
+        public void ShootInActor(Actor target)
+        {
+            if(target != null)
+                EquipedWeapon.Shoot(target.BodyCenter.position);
         }
 
         public bool CanSeeActor(Actor actor)
         {
+            if (actor == null) return false;
             //Check for obstacles
             RaycastHit hit;
             int mask = ~LayerMask.GetMask("Zones", "Projectiles", "Bones", "Weapons");
@@ -167,6 +206,7 @@ namespace VovTech
                 //If not, does spoted actor is behind this actor? If not - this actor can't see spoted actor.
                 if (Vector3.Distance(transform.position, actor.transform.position) > 2) return false;
             }
+            TargetLastSeenPosition = actor.transform.position;
             return true;
         }
 
@@ -188,6 +228,11 @@ namespace VovTech
         {
             base.Kill();
             Agent.isStopped = true;
+        }
+
+        private void GitLab()
+        {
+
         }
 
         public void GiveOrder(Order order, OrderTarget target)

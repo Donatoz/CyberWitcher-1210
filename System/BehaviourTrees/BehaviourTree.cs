@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using System;
 
 namespace VovTech.Behaviours
 {
     /// <summary>
     /// Base for all behaviour trees.
     /// </summary>
+    [RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
     public abstract class BehaviourTree : MonoBehaviour
     {
         /// <summary>
@@ -35,7 +36,7 @@ namespace VovTech.Behaviours
             public void MoveNext(int localId)
             {
                 
-                Node next = CurrentNode.GetChild(localId);
+                Node next = tree.GetNode(CurrentNode.GetChild(localId));
                 if (next != null)
                     CurrentNode = next;
             }
@@ -60,6 +61,10 @@ namespace VovTech.Behaviours
         /// </summary>
         public Entity Owner;
         /// <summary>
+        /// Tree-force-exit condition
+        /// </summary>
+        protected Func<bool> InterruptCondition = delegate { return false; };
+        /// <summary>
         /// Local initialization.
         /// </summary>
         public abstract void Initialize();
@@ -71,11 +76,13 @@ namespace VovTech.Behaviours
         /// <summary>
         /// Is the tree reached it's end?
         /// </summary>
+        [HideInInspector]
         public bool ReachedEnd;
         /// <summary>
         /// Tree pointer.
         /// </summary>
         public TreePointer Pointer;
+        private int idHandler = 0;
 
         protected virtual void Start()
         {
@@ -87,30 +94,34 @@ namespace VovTech.Behaviours
         /// </summary>
         /// <param name="node">Node to add</param>
         /// <param name="parent">Node to which the new node will be connected (if null - node will be connected to the start node)</param>
-        /// <param name="customId">Custom node name</param>
-        public void AddNode(Node node, Node parent, string customId = "")
+        /// <param name="globalName">Node global name</param>
+        public void AddNode(Node node, Node parent, string globalName)
         {
+            idHandler++;
+            node.GetData().Name = globalName;
+            node.GetData().Id = idHandler;
+            node.Tree = this;
+            nodes.Add(node);
             if (parent != null)
             {
-                parent.AddChild(node);
+                parent.AddChild(node.GetData().Name);
                 node.Parent = parent;
+                if(globalName == "Idle State")
+                {
+                    Debug.Log(parent.GetChild(0));
+                }
             }
             else if (nodes.Count > 0)
             {
-                nodes[0].AddChild(node);
+                //nodes[0].AddChild(node.GetData().Name);
                 node.Parent = nodes[0];
             }
-
-            node.GetData().Name = (customId != string.Empty) ? customId : (nodes.Count + 1).ToString();
-            node.GetData().Id = nodes.Count;
-            node.Tree = this;
-            nodes.Add(node);
         }
 
-        public void ConnectNodes(Node from, Node to)
+        public void ConnectNodes(string fromName, string toName)
         {
-            if(nodes.Contains(from) && nodes.Contains(to))
-                from.AddChild(to);
+            if (nodes.Find(x => x.GetData().Name == fromName) != null && nodes.Find(x => x.GetData().Name == toName) != null)
+                nodes.Find(x => x.GetData().Name == fromName).AddChild(toName);
         }
 
         protected IEnumerator UpdateNodes()
@@ -118,7 +129,7 @@ namespace VovTech.Behaviours
             while (!ReachedEnd)
             {
                 yield return new WaitForSeconds(Time.deltaTime);
-                if (nodes.Count == 0) break;
+                if (nodes.Count == 0 || InterruptCondition()) break;
                 Pointer.CurrentNode.UpdateNodeState();
             }
             Debug.Log("Tree reached the end");

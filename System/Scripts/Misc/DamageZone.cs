@@ -39,10 +39,8 @@ namespace VovTech
         {
             if (Delay > 0) return;
             Actor actor = other.transform.root.GetComponent<Actor>();
-            Debug.Log(actor);
             if(actor != null && actor.ActorFraction != ZoneFraction && !affected.Contains(actor))
             {
-                Debug.Log("Damaged");
                 actor.GetStat("Health").AddModifier(Damage);
                 affected.Add(actor);
             }
