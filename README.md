@@ -1,7 +1,7 @@
 # CyberWitcher 12/10
 
 ### ATTENTION! This is just a copy from GitLab(TalTech) repo.
-![](https://gitlab.cs.ttu.ee/kigris/iti0200-2020-project)
+![Gitlab repo](https://gitlab.cs.ttu.ee/kigris/iti0200-2020-project)
 
 ![Disintegrated in Endgame, Thanos appeared in CyberWithcer...](https://i.imgur.com/mbKZkXl.png)
 
