@@ -1,10 +1,7 @@
 # CyberWitcher 12/10
 
-![](https://img.shields.io/badge/stage-The%20AI%20Strikes%20Back-brightgreen)
-![](https://img.shields.io/badge/next%20build-TBA-yellow)
-![](https://img.shields.io/badge/C%23%20classes-131-blue)
-![](https://img.shields.io/badge/Java%20classes-No%20data-orange)
-![](https://img.shields.io/badge/Unity-2019.3.2f1-lightgrey)
+### ATTENTION! This is just a copy from GitLab(TalTech) repo.
+![](https://gitlab.cs.ttu.ee/kigris/iti0200-2020-project)
 
 ![Disintegrated in Endgame, Thanos appeared in CyberWithcer...](https://i.imgur.com/mbKZkXl.png)
 
